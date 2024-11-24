@@ -14,7 +14,7 @@ FRAMECODE_TYPES = {
         "generate_framecode" : lambda n : f"%0{n}d" 
     },
 
-    "hash": {
+    "numbersign": {
         "pattern": r"(#+)(?!.*#)", # Matches last set of "#"
         "width" : len,
         "generate_framecode" : lambda n : "#" * n

@@ -24,14 +24,14 @@ class FrameSequence():
         self._frames = {Path(frame) for frame in frames}
         self._start = parsing.get_frame_number(self[0])
         self._end = parsing.get_frame_number(self[-1])
-        self._name = parsing.Template(self[0])
+        self._name = parsing.Seqname(self[0])
         
         for frame in self:
             if not self.name.matches(frame):
                 raise ValueError(f"Item '{frame}' does not match the format '{self.name}'")
 
     @property    
-    def name(self) -> parsing.Template: 
+    def name(self) -> parsing.Seqname: 
         """Formattable string representing the names of image files"""
         return self._name
     
@@ -85,7 +85,7 @@ class FrameSequence():
         broad_rangestr = f"{self.range[0]}-{self.range[1]}"
         precise_rangestr = parsing.format_numbers(tuple(self.full_range))
 
-        repr = f"{self.name.translate('hash')} {broad_rangestr}"
+        repr = f"{self.name.translate('numbersign')} {broad_rangestr}"
         # Display precise range only if it is different from broad range (i.e the sequence is not continuous)
         repr += f" ({precise_rangestr})" if precise_rangestr != broad_rangestr else ""
         return repr
@@ -198,7 +198,7 @@ class FrameSequence():
 
 def find_sequence(path: str) -> FrameSequence:
     """
-    Find a frame sequence matching the given path or template.
+    Find a frame sequence matching the given path or seqname.
 
     Args:
         path: String or path representing the frames to look for. This can be either a literal filepath
@@ -210,9 +210,9 @@ def find_sequence(path: str) -> FrameSequence:
     """
 
     path = Path(path)
-    template = parsing.Template(str(path))
+    seqname = parsing.Seqname(str(path))
     frames = [file for file in path.parent.iterdir() 
-              if file.is_file() and template.matches(str(file))]
+              if file.is_file() and seqname.matches(str(file))]
     return FrameSequence(frames)
 
 def find_all_sequences(dir: str = ".", pattern: str = "*.*") -> Generator[FrameSequence, None, None]:
@@ -229,16 +229,16 @@ def find_all_sequences(dir: str = ".", pattern: str = "*.*") -> Generator[FrameS
     dir = Path(dir)
     sequences = {}
     for file in dir.glob(pattern):
-        # Check if this file matches an existing template
-        match_generator = (template 
-                           for template in sequences 
-                           if template.matches(str(file)))
+        # Check if this file matches an existing seqname
+        match_generator = (seqname 
+                           for seqname in sequences 
+                           if seqname.matches(str(file)))
 
         if match := next(match_generator, None):
             sequences[match].append(file)
         else:
             if parsing.has_framecode(file):
-                sequences[parsing.Template(file)] = [file]
+                sequences[parsing.Seqname(file)] = [file]
 
     return (FrameSequence(seq) for seq in sequences.values())
 

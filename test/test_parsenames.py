@@ -61,7 +61,7 @@ class TestGenerateFramecode:
     @pytest.mark.parametrize("n, framecode_type, expected_result", [
             (6, "format_code", "{:06d}"),
             (6, "modulo", "%06d"),
-            (6, "hash", "######")
+            (6, "numbersign", "######")
     ])
     def test_generate_framecode_valid_width(self, n, framecode_type, expected_result):
         assert fp.generate_framecode(framecode_type, n) == expected_result
@@ -77,7 +77,7 @@ class TestGenerateFramecode:
 
 class TestTranslation:
 
-    @pytest.fixture(scope="class", params = ["format_code", "modulo", "hash"])
+    @pytest.fixture(scope="class", params = ["format_code", "modulo", "numbersign"])
     def to_type(self, request):
         yield request.param
 

@@ -17,7 +17,7 @@ with open(FRAMESEQUENCES_FILE) as f:
 
 
 # PARAMETRIZED TYPES
-# All recognized framecode types (digits, format_code, modulo, hash)
+# All recognized framecode types (digits, format_code, modulo, numbersign)
 @pytest.fixture(scope="package" , params = FC_TYPES)
 def fc_type(request) -> str:
     return request.param
@@ -52,7 +52,7 @@ def sequence_framecodes(sequence_data) -> Dict:
 
 # Filename as a formattable string (identical to "format_code" framecode type)
 @pytest.fixture(scope="package" )
-def template_filename(sequence_data) -> str:
+def seqname_filename(sequence_data) -> str:
     return sequence_data["format_code"]
 
 # Frame number in input filename
@@ -73,8 +73,8 @@ def framecode_width(sequence_data) -> int:
 
 # Dummy file paths in this sequence
 @pytest.fixture(scope="package" )
-def sequence_paths(template_filename, seq_frame_range) -> Tuple[Path]:
-    return tuple(Path(template_filename.format(n)) for n in seq_frame_range)
+def sequence_paths(seqname_filename, seq_frame_range) -> Tuple[Path]:
+    return tuple(Path(seqname_filename.format(n)) for n in seq_frame_range)
 
 # List of integers representing the frame numbers in this sequence
 @pytest.fixture(scope="package" )

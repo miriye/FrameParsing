@@ -1,19 +1,19 @@
 {
-    "FC_TYPES" : ["format_code", "modulo", "hash", "digits"],
+    "FC_TYPES" : ["format_code", "modulo", "numbersign", "digits"],
     "SEQUENCES": [
         {   "filename" : "frame200.png",
             "framecodes" : {
                 "digits" : "200",
                 "format_code" : "{:03d}",
                 "modulo" : "%03d",
-                "hash" : "###"
+                "numbersign" : "###"
             },
             "frame_number" : 200,
             "framecode_type" : "digits",
             "width" : 3,
             "format_code" : "frame{:03d}.png",
             "modulo" : "frame%03d.png",
-            "hash" : "frame###.png",
+            "numbersign" : "frame###.png",
             "full_range" : [100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 
                 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125],
             "rangestr" : "100-125"
@@ -23,14 +23,14 @@
                 "digits" : "0345",
                 "format_code" : "{:04d}",
                 "modulo" : "%04d",
-                "hash" : "####"
+                "numbersign" : "####"
             },
             "frame_number" : 345,
             "framecode_type" : "digits",
             "width" : 4,
             "format_code" : "seq200\\hsv{:04d}.mp4",
             "modulo" : "seq200\\hsv%04d.mp4",
-            "hash" : "seq200\\hsv####.mp4",
+            "numbersign" : "seq200\\hsv####.mp4",
             "full_range": [100, 102, 104, 106, 108, 110, 112, 114, 116, 118, 120],
             "rangestr" : "100-120x2"
         },
@@ -39,14 +39,14 @@
                 "digits" : "-099",
                 "format_code" : "{:04d}",
                 "modulo" : "%04d",
-                "hash" : "####"
+                "numbersign" : "####"
             },
             "frame_number" : -99,
             "framecode_type" : "digits",
             "width" : 4,
             "format_code" : "folder\\file{:04d}.jpg",
             "modulo" : "folder\\file%04d.jpg",
-            "hash" : "folder\\file####.jpg",
+            "numbersign" : "folder\\file####.jpg",
             "full_range" : [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
             "rangestr" : "5-15"
         },
@@ -56,14 +56,14 @@
                 "digits" : "001200",
                 "format_code" : "{:06d}",
                 "modulo" : "%06d",
-                "hash" : "######"
+                "numbersign" : "######"
             },
             "frame_number" : 1200,
             "framecode_type" : "digits",
             "width" : 6,
             "format_code" : "frame{:06d}versionB.exr",
             "modulo" : "frame%06dversionB.exr",
-            "hash" : "frame######versionB.exr",
+            "numbersign" : "frame######versionB.exr",
             "full_range" : [-10,-9,-8,-7,-6,-5, 0],
             "rangestr" : "-10--5, 0"
          },
@@ -73,14 +73,14 @@
                 "digits" : "-002",
                 "format_code" : "{:04d}",
                 "modulo" : "%04d",
-                "hash" : "####"
+                "numbersign" : "####"
             },
             "frame_number" : -2,
             "framecode_type" : "digits",
             "width" : 4,
             "format_code" : "frames\\({:04d}).png",
             "modulo" : "frames\\(%04d).png",
-            "hash" : "frames\\(####).png",
+            "numbersign" : "frames\\(####).png",
             "full_range" : [-2],
             "rangestr" : "-2"
         }

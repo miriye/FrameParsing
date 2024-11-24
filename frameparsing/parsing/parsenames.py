@@ -23,7 +23,7 @@ class _Parser():
         Supported framecodes are:
         - 'format_code' : A Python 3-style format specifier.
         - 'modulo' : A C-style modulo format specifier.
-        - 'hash' : The last continuous set of '#' characters in string, where the number of 
+        - 'numbersign' : The last continuous set of '#' characters in string, where the number of 
             consecutive '#' characters should equal the numebr of digits expected in a filename
             of this format.
         - 'digits' : the first continuous set of digits in a string.
@@ -162,7 +162,7 @@ def generate_framecode(framecode_type: str, width: int) -> str:
 
     Args:
         framecode_type: The framecode type to output. Currently supported:
-            'format_code', 'modulo', 'hash'
+            'format_code', 'modulo', 'numbersign'
         width: The (minimum) fill width of the output code.
     
     Returns:

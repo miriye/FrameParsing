@@ -27,13 +27,13 @@ class TestFinding:
         rmtree(tmp_dir)
 
     @pytest.mark.parametrize("frame_number", [0,100,-200, 58203949])
-    def test_find_sequence_from_filename(self, frame_dir, template_filename, frame_number):
-        sequence = fp.find_sequence(Path(frame_dir) / template_filename.format(frame_number))
-        assert str(sequence.name) == str(Path(frame_dir) / template_filename)
+    def test_find_sequence_from_filename(self, frame_dir, seqname_filename, frame_number):
+        sequence = fp.find_sequence(Path(frame_dir) / seqname_filename.format(frame_number))
+        assert str(sequence.name) == str(Path(frame_dir) / seqname_filename)
 
-    def test_find_sequence_from_formats(self, frame_dir, sequence_data, fc_type_non_digit, template_filename):
+    def test_find_sequence_from_formats(self, frame_dir, sequence_data, fc_type_non_digit, seqname_filename):
         sequence = fp.find_sequence(Path(frame_dir) / sequence_data[fc_type_non_digit])
-        assert str(sequence.name) == str(Path(frame_dir) / template_filename)
+        assert str(sequence.name) == str(Path(frame_dir) / seqname_filename)
         
     def test_find_all_sequences(self, frame_dir, all_seqs_data):
         result = {Path(seq.name) for seq in fp.find_all_sequences(frame_dir, "**/*.*")}
@@ -54,8 +54,8 @@ class TestFrameSequenceClass:
         with pytest.raises(ValueError, match = r"'.*' does not match the format '.*'"):
             fp.FrameSequence(frames)
 
-    def test_name(self, framesequence_instance, template_filename):
-        assert framesequence_instance.name == template_filename
+    def test_name(self, framesequence_instance, seqname_filename):
+        assert framesequence_instance.name == seqname_filename
     
     def test_start(self, framesequence_instance, seq_frame_range):
         assert framesequence_instance.start == min(seq_frame_range)
@@ -73,15 +73,15 @@ class TestFrameSequenceClass:
     def test_equality(self, framesequence_instance, sequence_paths):
         assert framesequence_instance == sequence_paths
         
-    def test_contains_true(self, framesequence_instance, template_filename, filename_dtype, seq_frame_range):
+    def test_contains_true(self, framesequence_instance, seqname_filename, filename_dtype, seq_frame_range):
         frame_number = choice(seq_frame_range) # Randomly pick a frame
-        test_filename = template_filename.format(frame_number)
+        test_filename = seqname_filename.format(frame_number)
         test_filename = filename_dtype(test_filename)
         assert test_filename in framesequence_instance
 
-    def test_contains_false(self, framesequence_instance, template_filename, filename_dtype, seq_frame_range):
+    def test_contains_false(self, framesequence_instance, seqname_filename, filename_dtype, seq_frame_range):
         frame_number = min(seq_frame_range) - 1
-        test_filename = template_filename.format(frame_number)
+        test_filename = seqname_filename.format(frame_number)
         test_filename = filename_dtype(test_filename)
         assert test_filename not in framesequence_instance
 
@@ -93,11 +93,11 @@ class TestFrameSequenceClass:
             frame = choice(sequence_paths) # Randomly pick a frame
             assert sequence_paths.index(frame) == framesequence_instance.index(filename_dtype(frame))
 
-    def test_getitem(self, framesequence_instance, template_filename, seq_frame_range):
+    def test_getitem(self, framesequence_instance, seqname_filename, seq_frame_range):
         for _ in range(5):
             frame_index = randint(0, len(seq_frame_range) - 1) # Randomly pick a frame
             frame_number = seq_frame_range[frame_index]
-            expected_filename = template_filename.format(frame_number)
+            expected_filename = seqname_filename.format(frame_number)
             assert framesequence_instance[frame_index] == Path(expected_filename)
 
     def test_getitem_out_of_range(self, framesequence_instance, seq_frame_range):
@@ -108,19 +108,19 @@ class TestFrameSequenceClass:
     def test_length(self, framesequence_instance, seq_frame_range):
         assert len(framesequence_instance) == len(seq_frame_range)
 
-    def test_get_frame(self, framesequence_instance, template_filename, seq_frame_range):
+    def test_get_frame(self, framesequence_instance, seqname_filename, seq_frame_range):
         frame_number = choice(seq_frame_range)
-        expected_filename = template_filename.format(frame_number)
+        expected_filename = seqname_filename.format(frame_number)
         assert framesequence_instance.get_frame(frame_number) == Path(expected_filename)
 
     def test_get_frame_none(self, framesequence_instance, seq_frame_range):
         frame_number = min(seq_frame_range) - 1
         assert framesequence_instance.get_frame(frame_number) is None
 
-    def test_get_frame_relative(self, framesequence_instance, template_filename, seq_frame_range):
+    def test_get_frame_relative(self, framesequence_instance, seqname_filename, seq_frame_range):
         frame_index = randint(0, len(seq_frame_range) - 1)
         frame_number = seq_frame_range[frame_index]
-        expected_filename = template_filename.format(frame_number)
+        expected_filename = seqname_filename.format(frame_number)
         assert framesequence_instance.get_frame(frame_index, absolute=False) == Path(expected_filename)
 
     def test_get_frame_relative_none(self, framesequence_instance, seq_frame_range):
