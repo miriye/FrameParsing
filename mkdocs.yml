@@ -1,0 +1,7 @@
+site_name: FrameParsing Docs
+
+theme: "material"
+
+plugins:
+  - mkdocstrings:
+      
