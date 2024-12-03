@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Sequence, Generator, Tuple, Union, Set
 
 from . import parsing
+
 class FrameSequence():
     """
     Represents a sequence of filenames that follow the same naming convention,
@@ -18,7 +19,7 @@ class FrameSequence():
 
         
         Args:
-            frames (_type_): _description_
+            frames: The filepaths to create a sequence from.
         """
         
         self._frames = {Path(frame) for frame in frames}
@@ -200,6 +201,12 @@ def find_sequence(path: str) -> FrameSequence:
     """
     Find a frame sequence matching the given path or seqname.
 
+    Examples:
+        >>> find_sequence("folder\\frame0234.png")
+        seq020\\frame{:04d}.exr 0-14
+        >>> find_sequence("folder\\frame####.png")
+        seq020\\frame{:04d}.exr 0-14
+
     Args:
         path: String or path representing the frames to look for. This can be either a literal filepath
             (e.g 'seq100\\frame000.png') or a representattion (e.g 'seq100\\frame{:03d}.png' or 
@@ -218,6 +225,17 @@ def find_sequence(path: str) -> FrameSequence:
 def find_all_sequences(dir: str = ".", pattern: str = "*.*") -> Generator[FrameSequence, None, None]:
     """
     Find all frame sequences in the given directory that optionally match a certain pattern.
+
+    Examples:
+        >>> list(find_all_sequences(pattern="*.png"))
+        [shot010.{:04d}.png 0-14, shot020_{:03d}.png 0-100, shot030_{:03d}.png 0-52 (0-50, 52)]
+
+        >>> list(find_all_sequences(pattern="**/*.*"))
+        [shot010.{:04d}.png 0-14, seq100\\shot10\\frame{:03d}.png]
+
+        >>> list(find_all_sequences(dir="seq010", pattern="**/*shadow*.exr))
+        [seq010\\shot010\\shadow.{:04d}.png 0-14, seq010\\shot020\\shadow.{:04d}.png 0-14]
+
 
     Args:
         dir (optional): The directory to search. Defaults to current working directory.
@@ -254,6 +272,11 @@ def zip_sequences(*sequences : Union[Sequence[FrameSequence], None, None],
     Iterate over a frame range. For each frame number n, produces a tuple that contains
     frame n of each input FrameSequence.
 
+    Examples:
+        >>> tuple(zip_sequences(FrameSequence("shot10_beauty_####.exr"), FrameSequence("shot10_AO_####.exr))
+        (WindowsPath('shot10_beauty_0000.exr'), WindowsPath('shot10_AO_0000.exr')),
+        (WindowsPath('shot10_beauty_0001.exr'), WindowsPath('shot10_AO_0001.exr')) ...
+        
     Args:
         *sequences: The FrameSequence objects to zip up
         start (optional): The frame number (if absolute == True) or index 
